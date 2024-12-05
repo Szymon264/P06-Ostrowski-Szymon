@@ -1,0 +1,3 @@
+Duplikat znaleziony (brute force): 3
+Duplikat znaleziony (brute force): 7
+Liczba operacji : 45
