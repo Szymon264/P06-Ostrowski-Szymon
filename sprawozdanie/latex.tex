@@ -1,1 +1,171 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{geometry}
+\usepackage{hyperref}
+
+\geometry{margin=2.5cm}
+
+\begin{document}
+
+% Strona tytułowa
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+    
+    {\Huge \textbf{Sprawozdanie z projektu programistycznego}}\\[1cm]
+    
+    {\LARGE Znajdowanie elementów powtarzających się}\\[1cm]
+    
+    \vspace{1cm}
+    \textbf{Imię i Nazwisko} Szymon Ostrowski \\
+    \textbf{Numer grupy:} P06\\
+    \textbf{Data:} 4 grudnia 2024\\
+    
+    \vfill
+    {\large Środowisko: Code::Blocks IDE, język C++}\\
+    \vspace{0.5cm}
+    {\large GitHub jako repozytorium kodu.}\\
+    
+    \vfill
+\end{titlepage}
+
+% Spis treści
+\newpage
+\tableofcontents
+\newpage
+
+% Wstęp
+\section{Wstęp}
+Celem projektu jest zaimplementowanie dwóch metod znajdowania duplikatów w tablicy liczb całkowitych. Programy zostały napisane w języku C++ i testowane w środowisku Code::Blocks IDE. Pierwotnie implementacja została zrealizowana w jednym programie, ale w celu lepszego zrozumienia działania obu metod (brute force i tablicy pomocniczej) zostały one rozdzielone na dwa odrębne programy. W sprawozdaniu opisano problem, zastosowane podejście teoretyczne, szczegóły implementacji oraz wyniki testów.
+
+Zauważalnym celem projektu jest także porównanie wydajności obu podejść, a także analiza ich złożoności czasowej i pamięciowej, co pozwala na wyciągnięcie wniosków dotyczących ich zastosowania w praktyce.
+
+\section{Opis problemu}
+Zadanie polega na znalezieniu duplikatów w tablicy liczb całkowitych. Istnieje wiele różnych podejść do rozwiązania tego problemu, które mogą się różnić zarówno złożonością czasową, jak i wymaganiami dotyczącymi pamięci. W zależności od specyfiki danych wejściowych i wymagań dotyczących wydajności, wybór odpowiedniej metody może się różnić. W tym projekcie skupimy się na dwóch popularnych metodach:
+
+\begin{itemize}
+    \item Metoda \textbf{brute force}, która sprawdza każdą możliwą parę elementów tablicy. Jest to podejście bardzo proste w implementacji, ale niewydajne dla dużych danych.
+    \item Metoda z wykorzystaniem \textbf{tablicy pomocniczej}, która przechowuje liczbę wystąpień każdego elementu w osobnej tablicy. To podejście jest bardziej wydajne, ale wymaga dodatkowej przestrzeni pamięciowej.
+\end{itemize}
+
+Programy zostały zaimplementowane jako dwa oddzielne pliki, które odczytują dane wejściowe z pliku tekstowego, przetwarzają je i zapisują wyniki do pliku wynikowego. Kluczowym elementem w obydwu metodach jest porównanie liczby operacji wykonywanych w zależności od rozmiaru danych wejściowych.
+
+\newpage
+
+
+\section{Podstawy teoretyczne}
+\subsection{Złożoność czasowa}
+Złożoność czasowa obu metod różni się w zależności od zastosowanego podejścia:
+
+\begin{itemize}
+    \item \textbf{Metoda brute force} ma złożoność czasową $O(n^2)$, ponieważ wymaga przejścia przez wszystkie możliwe pary elementów w tablicy. Dla dużych danych wejściowych metoda ta staje się bardzo nieefektywna, ponieważ liczba operacji rośnie wykładniczo wraz ze wzrostem liczby elementów w tablicy.
+    \item \textbf{Metoda tablicy pomocniczej} ma złożoność czasową $O(n)$, ponieważ każdy element tablicy jest analizowany tylko raz. Jednakże, ta metoda wymaga dodatkowej przestrzeni pamięciowej na przechowanie tablicy pomocniczej. Jest to bardziej efektywne podejście, ale może być problematyczne, gdy dostępna pamięć jest ograniczona.
+\end{itemize}
+
+\subsection{Złożoność przestrzenna}
+- \textbf{Metoda brute force} wymaga stałej przestrzeni $O(1)$, ponieważ nie wykorzystuje dodatkowych struktur danych. Jednakże, jej słabością jest wysoka złożoność czasowa.
+- \textbf{Metoda z tablicą pomocniczą} ma złożoność przestrzenną $O(n)$, ponieważ wymaga dodatkowej tablicy do przechowywania liczb wystąpień elementów.
+
+
+
+\section{Szczegóły implementacji}
+Obie metody zostały zaimplementowane w dwóch oddzielnych programach:
+\begin{itemize}
+    \item Program \texttt{brute\_force.cpp} implementuje metodę brute force.
+    \item Program \texttt{hash\_map.cpp} implementuje metodę z tablicą pomocniczą.
+\end{itemize}
+
+W obu programach dane wejściowe są odczytywane z pliku tekstowego, który zawiera tablicę liczb całkowitych. Programy przetwarzają dane, znajdują duplikaty, a następnie zapisują wyniki do pliku wyjściowego. W obu przypadkach wynikiem jest lista znalezionych duplikatów. Programy zostały również przetestowane na różnych danych wejściowych, aby sprawdzić ich wydajność.
+
+\newpage
+
+
+\subsection{Schemat blokowy algorytmu}
+W tym miejscu znajdują się schematy blokowe dla obu metod. Pierwszy pokazuje algorytm brute force, a drugi algorytm z tablicą pomocniczą.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{brute-force.png}
+    \caption{Schemat blokowy algorytmu brute force}
+    \label{fig:schemat_bruteforce}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{pomocnicza.PNG}
+    \caption{Schemat blokowy algorytmu z tablicą pomocniczą}
+    \label{fig:schemat_hashmap}
+\end{figure}
+
+\subsection{Pseudokod algorytmu}
+
+\paragraph{Metoda brute force}
+Pseudokod dla metody brute force:
+\begin{verbatim}
+Funkcja znajdzDuplikatyBruteForce(tablica, rozmiar, plikWyjsciowy):
+Utwórz zbiór duplikaty
+Ustaw znalezionoDuplikaty na fałsz
+Dla i od 0 do rozmiar-1:
+Dla j od i+1 do rozmiar-1:
+Jeśli tablica[i] == tablica[j] i tablica[i] nie znajduje się w zbiorze duplikatów:
+Zapisz do plikWyjsciowy "Duplikat znaleziony (brute force):", tablica[i]
+Dodaj tablica[i] do zbioru duplikatów
+Ustaw znalezionoDuplikaty na prawda
+Jeśli znalezionoDuplikaty jest fałsz:
+Zapisz do plikWyjsciowy "Brak duplikatów (brute force)"
+\end{verbatim}
+
+\newpage
+
+
+\paragraph{Metoda z tablicą pomocniczą}
+Pseudokod dla metody z tablicą pomocniczą:
+\begin{verbatim}
+Funkcja znajdzDuplikatyTablicaPomocnicza(tablica, rozmiar, plikWyjsciowy):
+Utwórz zbiór duplikaty
+Utwórz dynamiczną tablicę tablicaPomocnicza o rozmiarze równym rozmiar
+Wypełnij tablicaPomocnicza zerami
+Ustaw znalezionoDuplikaty na fałsz
+Dla i od 0 do rozmiar-1:
+Zwiększ wartość tablicaPomocnicza[tablica[i]] o 1
+Jeśli tablicaPomocnicza[tablica[i]] == 2 i tablica[i] nie znajduje się w zbiorze duplikatów:
+Zapisz do plikWyjsciowy "Duplikat znaleziony (tablica pomocnicza):", tablica[i]
+Dodaj tablica[i] do zbioru duplikatów
+Ustaw znalezionoDuplikaty na prawda
+Jeśli znalezionoDuplikaty jest fałsz:
+Zapisz do plikWyjsciowy "Brak duplikatów (tablica pomocnicza)"
+\end{verbatim}
+
+\section{Testowanie}
+Programy zostały przetestowane na różnych zbiorach danych, obejmujących zarówno małe, jak i duże tablice. W szczególności testy obejmowały:
+\begin{itemize}
+    \item Tablice z losowymi liczbami
+    
+\end{itemize}
+
+Wyniki testów są przedstawione poniżej:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{wykres1.png}
+    \caption{Porównanie ilości operacji metod brute force i tablicy pomocniczej}
+    \label{fig:wykres_testow}
+\end{figure}
+
+\newpage
+
+
+\section{Wnioski i podsumowanie}
+Podczas realizacji projektu porównaliśmy dwie metody znajdowania duplikatów w tablicach: brute force i tablicę pomocniczą. Chociaż metoda brute force jest łatwa w implementacji, to jej złożoność czasowa $O(n^2)$ sprawia, że nie nadaje się do pracy z dużymi zbiorami danych. Z kolei metoda z tablicą pomocniczą, choć wymaga dodatkowej przestrzeni pamięciowej, jest zdecydowanie bardziej wydajna, szczególnie w przypadku dużych tablic. 
+
+Z analizy wyników testów wynika, że metoda brute force jest praktyczna tylko dla małych rozmiarów danych, natomiast dla większych tablic znacznie lepszym rozwiązaniem jest metoda z tablicą pomocniczą. Czas wykonania metody brute force rośnie wykładniczo z rozmiarem tablicy, podczas gdy czas wykonania metody z tablicą pomocniczą rośnie liniowo.
+
+
+
+\end{document}
 
